@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:logger/logger.dart';
+import 'package:student_registration/module/auth/auth_module.dart';
+import 'package:student_registration/routes/scammer_route.dart';
+
+class ScammerRouter {
+  static void _goToNextPage({
+    required String routeName,
+    Object? args,
+    bool isReplace = false,
+    bool isReplaceAll = false,
+  }) {
+    Logger().e(routeName);
+    if (isReplace) {
+      Modular.to.pushReplacementNamed(
+        routeName,
+        arguments: args,
+      );
+    } else if (isReplaceAll) {
+      Modular.to.pushNamedAndRemoveUntil(
+        routeName,
+        (Route<dynamic> route) => false,
+        arguments: args,
+      );
+    } else {
+      Modular.to.pushNamed(
+        routeName,
+        arguments: args,
+      );
+    }
+  }
+
+  static void changeRoute<M extends Module>(
+    String routes, {
+    Object? args,
+    bool? isReplace,
+    bool? isReplaceAll,
+    bool? clearStack,
+  }) {
+    String tempRoute = "";
+    switch (M) {
+      case AuthModule _:
+        tempRoute = ScamRoute.register;
+        break;
+    }
+
+    _goToNextPage(
+      routeName: "$tempRoute$routes",
+      args: args,
+      isReplace: isReplace ?? false,
+      isReplaceAll: isReplaceAll ?? false,
+    );
+  }
+}
