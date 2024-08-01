@@ -29,7 +29,7 @@ class CustomSearchBarState extends State<CustomSearchBar> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
-        height: 40,
+        height: 50,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20.0),
@@ -48,13 +48,12 @@ class CustomSearchBarState extends State<CustomSearchBar> {
               child: TextField(
                 controller: searchController,
                 decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 20.0),
                   hintText: 'Search Here.....',
                   hintStyle: const TextStyle(color: Colors.grey),
                   border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
-                  ),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.clear),
                     onPressed: () {
@@ -69,7 +68,7 @@ class CustomSearchBarState extends State<CustomSearchBar> {
               ),
             ),
             Container(
-              height: 40,
+              height: 50,
               width: 50,
               decoration: const BoxDecoration(
                 color: Colors.blue,

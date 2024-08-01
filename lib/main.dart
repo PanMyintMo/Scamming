@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:student_registration/scammer_module.dart';
 import 'package:student_registration/student.dart';
-import 'package:student_registration/util/applogger.dart';
 import 'package:student_registration/firebase_options.dart';
-
 
 
 Future<void> main() async {
@@ -15,7 +13,7 @@ Future<void> main() async {
   try {
     await Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform,);
   } catch (error) {
-    logger.e("Firebase initialize Failed $error");
+   // logger.e("Firebase initialize Failed $error");
   }
   runApp(ModularApp(module: ScammerModule(), child: const Student()));
 }

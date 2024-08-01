@@ -7,6 +7,7 @@ MaterialButton appbutton(
 }) {
   return MaterialButton(
     minWidth: double.infinity,
+    height: 50,
     color: Theme.of(context).primaryColor,
     textColor: Colors.blue,
     onPressed: onPressed,

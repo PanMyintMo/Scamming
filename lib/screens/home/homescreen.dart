@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:student_registration/firebase_services/firebase_auth.dart';
-import 'package:student_registration/module/usermodel.dart';
-import 'package:student_registration/util/applogger.dart';
-import 'package:student_registration/util/search.dart';
+part of 'mainpage.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -25,7 +21,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
   Future<void> retrieveUsersFromFirestore() async {
     List<UserModel> users = await Auth.fetchAllUserData();
 
-    logger.d("Users are ${users.map((user) => user.name)}");
     setState(() {
       allUsers = users;
       filteredUsers = users;
@@ -42,7 +37,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     if (query.isEmpty) {
       setState(() {
         filteredUsers = allUsers;
-         isHasUser = false;
+        isHasUser = false;
       });
       return;
     }
@@ -58,38 +53,39 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
     setState(() {
       filteredUsers = filteredList;
-
-       isHasUser = filteredUsers!.isNotEmpty;
+      isHasUser = filteredUsers!.isNotEmpty;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Home Page User Screen'),
-      ),
-      body: Column(
+    return SingleChildScrollView(
+      child: Column(
         children: [
           CustomSearchBar(onSearch: handleSearch),
-          Expanded(
-              child: isHasUser
-                  ? ListView.builder(
-                      itemCount: filteredUsers?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        UserModel user = filteredUsers![index];
-                        return ListTile(
-                          title: Text(user.name),
-                          subtitle: Text(user.email),
-                          trailing: Text(user.phonenumber),
-                        );
-                      },
-                    )
-                  : const Center(
-                      child:
-                          Text("You can serach by name, email or phone number"),
-                    )),
+          isHasUser
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: filteredUsers?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    UserModel user = filteredUsers![index];
+                    return ListTile(
+                      title: Text(user.name),
+                      subtitle: Text(user.email),
+                      trailing: Text(user.phonenumber),
+                    );
+                  },
+                )
+              : const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "You can search by name, email, or phone number",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
         ],
       ),
     );

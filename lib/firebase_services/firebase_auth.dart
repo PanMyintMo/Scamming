@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:student_registration/firebase_services/fire_store.dart';
-import 'package:student_registration/module/usermodel.dart';
+import 'package:student_registration/model/categorymodel.dart';
+import 'package:student_registration/model/usermodel.dart';
 import 'package:student_registration/util/applogger.dart';
 
 class Auth {
@@ -22,25 +23,24 @@ class Auth {
   }
 
   static Future<void> createUserWithEmailAndPassword({
-    required String email,
     required String password,
-    required String phonenumber,
-    required String name,
+    required UserModel userModel,
     required String role,
   }) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
+        email: userModel.email,
         password: password,
       );
 
       if (currenUser != null) {
         AuthStore.addUserToFirestore(
             userId: currenUser!.uid,
-            name: name,
-            email: email,
-            phonenumber: phonenumber,
-            role: role);
+            role: role,
+            userModel: UserModel(
+                name: userModel.name,
+                email: userModel.email,
+                phonenumber: userModel.phonenumber));
       }
     } catch (error) {
       logger.e("Sign up error $error");
@@ -84,6 +84,24 @@ class Auth {
       rethrow;
     }
   }
+
+
+    static Future<List<CategoryModel>> fetchAllCategoryData() async {
+    try {
+      final CollectionReference categories =
+          FirebaseFirestore.instance.collection('categories');
+
+      final QuerySnapshot result = await categories.get();
+      final List<DocumentSnapshot> documents = result.docs;
+
+      return documents.map((doc) {
+        return CategoryModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (error) {
+      rethrow;
+    }
+  }
+
 
   Future<void> signOut() async {
     try {

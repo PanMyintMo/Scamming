@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:student_registration/firebase_services/firebase_auth.dart';
+import 'package:student_registration/model/usermodel.dart';
 import 'package:student_registration/module/home/home_module.dart';
 import 'package:student_registration/routes/app_routers/scammer_router.dart';
 import 'package:student_registration/routes/home/home_route.dart';
@@ -100,14 +101,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   _formKey.currentState?.validate();
 
                   await Auth.createUserWithEmailAndPassword(
-                          email: emailController.text.trim().toString(),
                           password: passwordController.text.trim().toString(),
-                          name: nameController.text.trim().toString(),
-                          phonenumber: phoneNumber ??
-                              phoneNumberController.text.trim().toString(),
-                          role: 'user')
+                          role: 'user',
+                          userModel: UserModel(
+                              name: nameController.text.trim().toString(),
+                              email: emailController.text.trim().toString(),
+                              phonenumber: phoneNumber ??
+                                  phoneNumberController.text.trim().toString()))
                       .then((_) => ScammerRouter.changeRoute<HomeModule>(
-                        HomeRoutes.homepage));
+                          HomeRoutes.homepage));
                 }),
               ],
             ),

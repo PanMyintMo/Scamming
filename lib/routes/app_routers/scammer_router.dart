@@ -1,9 +1,11 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:logger/logger.dart';
-import 'package:student_registration/module/auth/auth_module.dart';
-import 'package:student_registration/module/home/home_module.dart';
 import 'package:student_registration/routes/scammer_route.dart';
+import 'package:student_registration/module/home/home_module.dart';
+import 'package:student_registration/module/auth/auth_module.dart';
+import 'package:student_registration/module/category/categorymodule.dart';
+import 'package:student_registration/routes/category/category_routes.dart';
 
 class ScammerRouter {
   static void _goToNextPage({
@@ -48,6 +50,10 @@ class ScammerRouter {
       case HomeModule:
         tempRoute = ScamRoute.home;
 
+        break;
+
+      case CategoryModule:
+        tempRoute =  ScamRoute.home + CategoryRoutes.root;
         break;
     }
 
